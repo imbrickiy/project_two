@@ -1,12 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:project_two/station_screen.dart';
 import 'package:project_two/widgets/layout_widget.dart';
 
 import 'model/stations.dart';
 
 class FixedSizeGrid extends StatelessWidget {
-  final List items;
+  final List<Station> stations;
 
-  const FixedSizeGrid({super.key, required this.items});
+  const FixedSizeGrid({super.key, required this.stations});
 
   @override
   Widget build(BuildContext context) {
@@ -24,37 +26,34 @@ class FixedSizeGrid extends StatelessWidget {
             mainAxisSpacing: spacing,
             mainAxisExtent: 140,
           ),
-          itemCount: items.length,
+          itemCount: stations.length,
           itemBuilder: (context, index) {
-            final station = items[index];
-
-            String title = ' ';
-            String imageUrl = ' ';
-            if (station is Station) {
-              title = station.title ?? ' ';
-              imageUrl = station.iconFillWhite.toString();
-            } else {
-              title = station.toString();
-            }
+            final station = stations[index];
             return SizedBox(
               width: itemWidth,
               height: 140,
               child: GridItem(
-                imageUrl: imageUrl,
-                title: title,
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(title),
-                      duration: const Duration(seconds: 1),
-                    ),
-                  );
-                },
+                imageUrl: station.iconGray ?? '',
+                title: station.title ?? '',
+                onTap: () => _openStationScreen(context, station),
               ),
             );
           },
         );
       },
+    );
+  }
+
+  void _openStationScreen(BuildContext context, Station station) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StationScreen(
+          stationName: station.title ?? '',
+          stationUrl: station.streamHls ?? '',
+          stationImage: station.iconGray ?? '',
+        ),
+      ),
     );
   }
 }
@@ -92,10 +91,17 @@ class GridItem extends StatelessWidget {
               children: [
                 Expanded(
                   child: imageUrl.isNotEmpty
-                      ? Image(
-                          image: NetworkImage(imageUrl),
+                      ? CachedNetworkImage(
+                          imageUrl: imageUrl,
                           width: double.infinity,
                           fit: BoxFit.contain,
+                          placeholder: (context, url) => const Center(
+                            child: CircularProgressIndicator(
+                              color: Color(0xFFf2581f),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error, color: Colors.red),
                         )
                       : const SizedBox(),
                 ),
@@ -104,6 +110,8 @@ class GridItem extends StatelessWidget {
                   title,
                   style: const TextStyle(color: Colors.white, fontSize: 12),
                   textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
                 ),
               ],
             ),

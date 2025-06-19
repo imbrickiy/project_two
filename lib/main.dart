@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:project_two/station_screen.dart';
 
 import 'list_screen.dart';
 import 'model/stations.dart';
@@ -69,28 +68,22 @@ class _HomeState extends State<Home> {
     }
 
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Список'),
-          BottomNavigationBarItem(icon: Icon(Icons.grid_view), label: 'Сетка'),
-        ],
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const StationScreen()),
-            );
-          } else {
-            // Здесь можно добавить логику для сетки, если нужно
-          }
-        },
-      ),
-      backgroundColor: const Color(0xFF141414),
+      backgroundColor: const Color(0xFF262626).withValues(alpha: 0.9),
       appBar: AppBar(
-        title: const Text('Сетка станций'),
-        backgroundColor: const Color(0xFF262626),
+        backgroundColor: const Color(
+          0xFF262626,
+        ), // 90% opacity// Transparent background
+        elevation: 0,
+        title: const Text(
+          'Stations',
+          style: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
       ),
-      body: FixedSizeGrid(items: data!.result!.stations),
+      body: FixedSizeGrid(stations: data!.result!.stations),
     );
   }
 }

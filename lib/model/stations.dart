@@ -196,7 +196,7 @@ class Station {
     "stream_128": stream128,
     "stream_320": stream320,
     "stream_hls": streamHls,
-    "genre": genre.map((x) => x?.toJson()).toList(),
+    "genre": genre.map((x) => x.toJson()).toList(),
     "detail_page_url": detailPageUrl,
     "shareUrl": shareUrl,
     "mark": mark,
