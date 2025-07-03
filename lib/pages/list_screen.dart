@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:project_two/station_screen.dart';
+import 'package:project_two/common/colors.dart';
+import 'package:project_two/pages/station_screen.dart';
+import 'package:project_two/states/station_player_state.dart';
 import 'package:project_two/widgets/layout_widget.dart';
+import 'package:provider/provider.dart';
 
-import 'model/stations.dart';
+import '../model/stations.dart';
 
 class FixedSizeGrid extends StatelessWidget {
   final List<Station> stations;
@@ -19,7 +22,12 @@ class FixedSizeGrid extends StatelessWidget {
       spacing: spacing,
       builder: (context, crossAxisCount) {
         return GridView.builder(
-          padding: const EdgeInsets.all(spacing),
+          padding: const EdgeInsets.only(
+            left: spacing,
+            right: spacing,
+            bottom: spacing,
+            top: kToolbarHeight + 16, // 16 is extra spacing, adjust as needed
+          ),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: spacing,
@@ -45,6 +53,16 @@ class FixedSizeGrid extends StatelessWidget {
   }
 
   void _openStationScreen(BuildContext context, Station station) {
+    final playerProvider = Provider.of<PlayerProvider>(context, listen: false);
+    playerProvider.setSource(
+      station.streamHls ??
+          'https://listen.powerapp.com.tr/powerdeep/abr/playlist.m3u8',
+    );
+    playerProvider.isPlaying
+        ? (playerProvider.stop(), playerProvider.play())
+        : playerProvider.play();
+    playerProvider.setStationName(station.title ?? '');
+    playerProvider.setStationImage(station.iconGray ?? '');
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -73,13 +91,15 @@ class GridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: const Color(0xFF262626),
+      color: AppColors.background,
       borderRadius: BorderRadius.circular(12),
       elevation: 3,
       child: InkWell(
-        splashColor: const Color(0xFFf2581f).withAlpha(30),
-        highlightColor: const Color(0xFFf2581f).withAlpha(30),
         borderRadius: BorderRadius.circular(12),
+        splashColor: AppColors.primary.withValues(
+          alpha: 0.3, // Adjust alpha for splash effect
+        ),
+        highlightColor: AppColors.primary,
         onTap: onTap,
         child: Container(
           alignment: Alignment.bottomCenter,
@@ -97,18 +117,18 @@ class GridItem extends StatelessWidget {
                           fit: BoxFit.contain,
                           placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator(
-                              color: Color(0xFFf2581f),
+                              color: AppColors.primary,
                             ),
                           ),
                           errorWidget: (context, url, error) =>
-                              const Icon(Icons.error, color: Colors.red),
+                              const Icon(Icons.error, color: AppColors.error),
                         )
                       : const SizedBox(),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   title,
-                  style: const TextStyle(color: Colors.white, fontSize: 12),
+                  style: const TextStyle(color: Colors.white70, fontSize: 12),
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
