@@ -26,7 +26,7 @@ class FixedSizeGrid extends StatelessWidget {
             left: spacing,
             right: spacing,
             bottom: spacing,
-            top: kToolbarHeight + 16, // 16 is extra spacing, adjust as needed
+            top: spacing, // 16 is extra spacing, adjust as needed
           ),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,

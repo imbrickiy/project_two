@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -78,37 +77,11 @@ class _HomeState extends State<Home> {
     }
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: Stack(
-          children: [
-            // Glass effect
-            ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                child: Container(
-                  color: AppColors.background.withValues(
-                    alpha: 150, // Adjust alpha for transparency
-                  ), // semi-transparent
-                  height: kToolbarHeight,
-                ),
-              ),
-            ),
-            AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              title: const Text(
-                'Stations',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        title: const Text('Radio Stations'),
+        backgroundColor: AppColors.primary,
+        centerTitle: true,
       ),
       body: LayoutWithFooter(
         child: FixedSizeGrid(stations: data!.result!.stations),
