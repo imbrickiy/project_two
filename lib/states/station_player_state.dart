@@ -36,14 +36,17 @@ class PlayerProvider extends ChangeNotifier {
 
   Future<void> play() async {
     await _player.play();
+    notifyListeners();
   }
 
   Future<void> pause() async {
     await _player.pause();
+    notifyListeners();
   }
 
   Future<void> stop() async {
     await _player.stop();
+    notifyListeners();
   }
 
   Future<void> setSource(String url) async {
@@ -59,6 +62,7 @@ class PlayerProvider extends ChangeNotifier {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
       _player.stop();
+      notifyListeners();
     }
   }
 }

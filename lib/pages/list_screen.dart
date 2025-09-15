@@ -22,12 +22,7 @@ class FixedSizeGrid extends StatelessWidget {
       spacing: spacing,
       builder: (context, crossAxisCount) {
         return GridView.builder(
-          padding: const EdgeInsets.only(
-            left: spacing,
-            right: spacing,
-            bottom: spacing,
-            top: spacing, // 16 is extra spacing, adjust as needed
-          ),
+          padding: const EdgeInsets.all(spacing),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: spacing,
@@ -37,6 +32,10 @@ class FixedSizeGrid extends StatelessWidget {
           itemCount: stations.length,
           itemBuilder: (context, index) {
             final station = stations[index];
+            final playerProvider = Provider.of<PlayerProvider>(context);
+            final isActive =
+                station.title == playerProvider.stationName &&
+                playerProvider.isPlaying;
             return SizedBox(
               width: itemWidth,
               height: 140,
@@ -44,6 +43,7 @@ class FixedSizeGrid extends StatelessWidget {
                 imageUrl: station.iconGray ?? '',
                 title: station.title ?? '',
                 onTap: () => _openStationScreen(context, station),
+                isActive: isActive,
               ),
             );
           },
@@ -54,6 +54,7 @@ class FixedSizeGrid extends StatelessWidget {
 
   void _openStationScreen(BuildContext context, Station station) {
     final playerProvider = Provider.of<PlayerProvider>(context, listen: false);
+
     playerProvider.setSource(
       station.streamHls ??
           'https://listen.powerapp.com.tr/powerdeep/abr/playlist.m3u8',
@@ -80,25 +81,25 @@ class GridItem extends StatelessWidget {
   final String title;
   final String imageUrl;
   final VoidCallback onTap;
+  final bool isActive;
 
   const GridItem({
     super.key,
     required this.title,
     required this.onTap,
     required this.imageUrl,
+    this.isActive = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.background,
+      color: !isActive ? AppColors.background : Colors.orange[700],
       borderRadius: BorderRadius.circular(12),
       elevation: 3,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        splashColor: AppColors.primary.withValues(
-          alpha: 0.3, // Adjust alpha for splash effect
-        ),
+        splashColor: AppColors.primary.withValues(alpha: 0.3),
         highlightColor: AppColors.primary,
         onTap: onTap,
         child: Container(

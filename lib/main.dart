@@ -24,11 +24,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      home: const Home(),
-    );
+    return MaterialApp(debugShowCheckedModeBanner: false, home: const Home());
   }
 }
 
@@ -72,20 +68,17 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    if (data == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
-
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Radio Stations'),
-        backgroundColor: AppColors.primary,
-        centerTitle: true,
-      ),
-      body: LayoutWithFooter(
-        child: FixedSizeGrid(stations: data!.result!.stations),
-      ),
+    return Consumer<PlayerProvider>(
+      builder: (context, playerProvider, child) {
+        return Scaffold(
+          backgroundColor: AppColors.background,
+          body: data == null
+              ? const Center(child: CircularProgressIndicator())
+              : LayoutWithFooter(
+                  child: FixedSizeGrid(stations: data!.result!.stations),
+                ),
+        );
+      },
     );
   }
 }

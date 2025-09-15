@@ -67,7 +67,7 @@ class _WaveIconButtonState extends State<WaveIconButton>
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        AppColors.primary.withOpacity(0.2 * (1 - value)),
+                        AppColors.primary.withValues(alpha: 0.3 * (1 - value)),
                         Colors.transparent,
                       ],
                       stops: [0.7, 1.0],
