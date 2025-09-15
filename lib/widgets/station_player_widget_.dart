@@ -28,8 +28,6 @@ class _StationPlayerWidgetState extends State<StationPlayerWidget>
     volumeNotifier = ValueNotifier<double>(1.0);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Column(

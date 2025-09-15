@@ -48,10 +48,6 @@ class StationScreen extends StatelessWidget {
         ],
       ),
       backgroundColor: AppColors.background,
-      // bottomNavigationBar: CustomBottomNavigationBar(
-      //   currentIndex: 0,
-      //   context: context,
-      // ),
       body: SafeArea(
         child: LayoutWithFooter(
           child: StationPlayerWidget(
@@ -60,7 +56,6 @@ class StationScreen extends StatelessWidget {
             stationImage: stationImage,
           ),
         ),
-        // child: StationPlayer(),
       ),
     );
   }

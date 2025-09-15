@@ -10,7 +10,6 @@ class StationPlayer extends StatefulWidget {
 class _StationPlayerState extends State<StationPlayer> {
   @override
   Widget build(BuildContext context) {
-    // final playerProvider = Provider.of<PlayerProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: Column(

@@ -27,7 +27,6 @@ class StationPlayerWidget extends StatelessWidget {
           ),
         ),
         Center(child: StationImage(imageUrl: stationImage)),
-        // ControlButtons(_player, volumeNotifier: volumeNotifier),
       ],
     );
   }
