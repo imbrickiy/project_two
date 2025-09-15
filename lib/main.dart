@@ -6,11 +6,14 @@ import 'package:project_two/common/colors.dart';
 import 'package:project_two/states/station_player_state.dart';
 import 'package:project_two/widgets/layout_with_footer.dart';
 import 'package:provider/provider.dart';
+import 'package:window_size/window_size.dart';
 
 import 'model/stations.dart';
 import 'pages/list_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  setWindowMinSize(const Size(300, 300));
   runApp(
     ChangeNotifierProvider(
       create: (_) => PlayerProvider(),
